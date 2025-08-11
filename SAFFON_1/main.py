@@ -1,6 +1,5 @@
-#!/usr/bin/env python3
 """
-샤프란 수확 듀얼 로봇팔 시스템 - 메인 실행 파일 (개선된 버전)
+샤프란 수확 듀얼 로봇팔 시스템 - 메인 실행 파일 
 """
 
 import pybullet as p
@@ -124,4 +123,5 @@ def main():
             pass
 
 if __name__ == "__main__":
+
     main()
