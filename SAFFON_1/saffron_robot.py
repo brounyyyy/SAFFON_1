@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 듀얼 로봇팔 컨트롤러 - 두 개의 Panda 로봇팔 제어
 """
@@ -23,7 +22,7 @@ class DualRobotController:
         self.target_objects = []
         self.create_target_objects()
         
-        print("✅ 듀얼 로봇 시스템 초기화 완료!")
+        print("듀얼 로봇 시스템 초기화 완료!")
     
     def setup_environment(self):
         """환경 설정"""
@@ -35,7 +34,7 @@ class DualRobotController:
         table_orientation = p.getQuaternionFromEuler([0, 0, 0])
         self.table_id = p.loadURDF("table/table.urdf", table_pos, table_orientation)
         
-        print("🏠 환경 설정 완료")
+        print("환경 설정 완료")
     
     def setup_dual_robots(self):
         """두 개의 로봇팔 설정"""
@@ -81,14 +80,14 @@ class DualRobotController:
         # 홈 포지션으로 이동
         self.move_both_to_home()
         
-        print("🤖 듀얼 로봇 설정 완료")
+        print("듀얼 로봇 설정 완료")
     
     def create_target_objects(self):
         """보라색 원통 객체 1개 생성 (샤프란 꽃 역할)"""
         # 단일 꽃 위치 - 테이블 중앙
         flower_position = [0.5, 0.0, 0.65]
         
-        print("🌸 샤프란 꽃 객체 생성 중...")
+        print("샤프란 꽃 객체 생성 중...")
         
         try:
             # 원통 모양 생성
@@ -110,12 +109,12 @@ class DualRobotController:
                 basePosition=flower_position)
             
             self.target_objects.append(cylinder_id)
-            print(f"   🌸 꽃 생성 완료: {flower_position}")
+            print(f"   꽃 생성 완료: {flower_position}")
             
         except Exception as e:
-            print(f"   ❌ 꽃 생성 실패: {e}")
+            print(f"   꽃 생성 실패: {e}")
         
-        print(f"🌸 샤프란 꽃 1개 생성 완료!")
+        print(f"샤프란 꽃 1개 생성 완료!")
     
     def move_both_to_home(self):
         """두 로봇 모두 홈 포지션으로 이동"""
@@ -181,7 +180,7 @@ class DualRobotController:
             return True
             
         except Exception as e:
-            print(f"⚠️ 로봇 이동 실패: {e}")
+            print(f"로봇 이동 실패: {e}")
             return False
     
     def get_end_effector_position(self, robot_id):
@@ -254,7 +253,7 @@ class DualRobotController:
         target_z = max(obj_pos[2] + 0.05, min_z)  # 객체 위 5cm 또는 최소 높이
         step_size = 0.03
         
-        print(f"🔽 점진적 하강 시작:")
+        print(f"점진적 하강 시작:")
         print(f"   시작 높이: {current_z:.3f}m")
         print(f"   목표 높이: {target_z:.3f}m")
         print(f"   최소 높이 제한: {min_z:.3f}m")
@@ -274,10 +273,10 @@ class DualRobotController:
                 p.stepSimulation()
                 time.sleep(1/240)
         
-        print(f"✅ 하강 완료! 최종 높이: {current_z:.3f}m")
+        print(f"하강 완료! 최종 높이: {current_z:.3f}m")
         
         # 그리퍼 닫기
-        print("🤏 그리퍼 닫기...")
+        print("그리퍼 닫기...")
         self.control_gripper(robot_id, open_gripper=False)
         
         # 접촉 확인
@@ -299,14 +298,14 @@ class DualRobotController:
             
             # 간단한 로그만 출력 (성공/실패 시에만)
             if success:
-                print(f"   ✅ 도킹 성공 (거리: {distance:.3f}m)")
+                print(f"   도킹 성공 (거리: {distance:.3f}m)")
             else:
-                print(f"   ❌ 도킹 실패 (거리: {distance:.3f}m)")
+                print(f"   도킹 실패 (거리: {distance:.3f}m)")
             
             return success, distance, has_contact
             
         except Exception as e:
-            print(f"   ❌ 도킹 체크 실패: {e}")
+            print(f"   도킹 체크 실패: {e}")
             return False, 999, False
 
     def calculate_facing_orientation(self, from_pos, to_pos):
@@ -355,12 +354,12 @@ class DualRobotController:
             grasped = gripper_closed and (has_contact or is_lifted)
             
             if not grasped:
-                print(f"   ⚠️ 객체 놓침 감지! 그리퍼={gripper_closed}, 접촉={has_contact}, 높이={obj_pos[2]:.3f}m")
+                print(f"   객체 놓침 감지! 그리퍼={gripper_closed}, 접촉={has_contact}, 높이={obj_pos[2]:.3f}m")
             
             return grasped
             
         except Exception as e:
-            print(f"   ❌ 객체 상태 확인 실패: {e}")
+            print(f"   객체 상태 확인 실패: {e}")
             return False
 
     def check_robot_collision_risk(self):
@@ -375,22 +374,22 @@ class DualRobotController:
             collision_risk = distance < 0.15
             
             if collision_risk:
-                print(f"   ⚠️ 충돌 위험! 로봇 간 거리: {distance:.3f}m")
+                print(f"   충돌 위험! 로봇 간 거리: {distance:.3f}m")
             
             return collision_risk, distance
             
         except Exception as e:
-            print(f"   ❌ 충돌 체크 실패: {e}")
+            print(f"   충돌 체크 실패: {e}")
             return False, 999
 
     def safe_retreat_both_robots(self, grasped_object_id, retreat_distance=0.5):
         """안전한 양방향 후퇴 (충돌 방지 + 객체 보호)"""
-        print(f"⏮️ 안전 후퇴 {retreat_distance*100:.0f}cm (충돌방지+객체보호)...")
+        print(f"안전 후퇴 {retreat_distance*100:.0f}cm (충돌방지+객체보호)...")
         
         try:
             # 1. 먼저 객체가 여전히 잡혀있는지 확인
             if not self.check_object_still_grasped(self.robot1_id, grasped_object_id):
-                print("   ❌ 객체가 이미 놓쳐짐! 재잡기 시도...")
+                print("   객체가 이미 놓쳐짐! 재잡기 시도...")
                 # 재잡기 시도
                 self.control_gripper(self.robot1_id, open_gripper=False)
                 for _ in range(60):
@@ -440,7 +439,7 @@ class DualRobotController:
             # 4. 충돌 위험이 높으면 더 멀리 후퇴
             if collision_risk:
                 retreat_distance = max(retreat_distance, 0.7)  # 최소 70cm
-                print(f"   🚨 충돌 위험으로 후퇴 거리 증가: {retreat_distance*100:.0f}cm")
+                print(f"   충돌 위험으로 후퇴 거리 증가: {retreat_distance*100:.0f}cm")
             
             # 5. 단계별 안전 후퇴 (7단계)
             retreat_steps = 7
@@ -488,7 +487,7 @@ class DualRobotController:
                 # 충돌 위험 재확인
                 collision_risk, new_distance = self.check_robot_collision_risk()
                 if collision_risk and step < retreat_steps - 2:  # 마지막 2단계가 아니면
-                    print(f"   ⚠️ 단계 {step+1}: 여전히 충돌 위험, 거리 증가")
+                    print(f"   단계 {step+1}: 여전히 충돌 위험, 거리 증가")
                     retreat_distance = min(retreat_distance * 1.2, 1.0)  # 최대 100cm
             
             # 6. 최종 상태 확인
@@ -499,7 +498,7 @@ class DualRobotController:
             object_still_grasped = self.check_object_still_grasped(self.robot1_id, grasped_object_id)
             final_collision_risk, _ = self.check_robot_collision_risk()
             
-            status = "✅ 성공" if object_still_grasped and not final_collision_risk else "⚠️ 주의"
+            status = "성공" if object_still_grasped and not final_collision_risk else "주의"
             print(f"   {status} 안전 후퇴 완료! 거리: {final_distance:.3f}m, 객체: {'보유' if object_still_grasped else '분실'}")
             
         except Exception as e:
@@ -515,7 +514,7 @@ class DualRobotController:
 
     def perform_handover(self, grasped_object_id):
         """두 로봇 간 객체 전달 - 몸쪽으로 완전히 당긴 후 이동"""
-        print("🤝 로봇 간 객체 전달 시작 (몸쪽 당기기 → 이동)...")
+        print("로봇 간 객체 전달 시작 (몸쪽 당기기 → 이동)...")
         
         # 1. 로봇1이 객체를 140cm 높이로 올리기
         lift_height = 1.4  # 140cm 높이
@@ -531,7 +530,7 @@ class DualRobotController:
             time.sleep(1/240)
         
         # 2. 로봇1을 홈 포지션으로 돌아가게 하기 (완전히 몸쪽으로)
-        print("🏠 로봇1: 홈 포지션으로 복귀하여 객체 안전 확보...")
+        print("로봇1: 홈 포지션으로 복귀하여 객체 안전 확보...")
         
         # 홈 포지션으로 이동 (높이만 140cm로 유지)
         robot1_data = self.robots['robot1']
@@ -551,7 +550,7 @@ class DualRobotController:
         ee_pos_home, ee_orn_home = self.get_end_effector_position(self.robot1_id)
         home_lift_pos = [ee_pos_home[0], ee_pos_home[1], lift_height]
         
-        print(f"📈 로봇1: 홈 위치에서 {lift_height*100:.0f}cm 높이로 조정...")
+        print(f"로봇1: 홈 위치에서 {lift_height*100:.0f}cm 높이로 조정...")
         self.move_robot_to_position(self.robot1_id, home_lift_pos, slow=True)
         
         # 안정화 대기
@@ -559,7 +558,7 @@ class DualRobotController:
             p.stepSimulation()
             time.sleep(1/240)
         
-        print("✅ 로봇1: 홈 포지션 복귀 완료")
+        print("로봇1: 홈 포지션 복귀 완료")
         
         # 3. 로봇 베이스 위치 정의 (방향 계산용)
         robot1_base_pos = [-0.2, 0.4, 0.625]   # 로봇1 베이스 위치
@@ -593,7 +592,7 @@ class DualRobotController:
         yaw_to_robot2 = math.atan2(unit_direction[0], unit_direction[1])
         robot1_final_orn = p.getQuaternionFromEuler([0, math.pi/2, yaw_to_robot2])
         
-        print("➡️ 로봇1: 상대방 쪽으로 30cm 이동하여 고정...")
+        print("로봇1: 상대방 쪽으로 30cm 이동하여 고정...")
         self.move_robot_to_position(self.robot1_id, final_handover_pos, robot1_final_orn, slow=True)
         
         # 안정화 대기
@@ -601,7 +600,7 @@ class DualRobotController:
             p.stepSimulation()
             time.sleep(1/240)
         
-        print("✅ 로봇1: 최종 고정 위치 설정 완료 - 대기 모드")
+        print("로봇1: 최종 고정 위치 설정 완료 - 대기 모드")
         
         # 4. 로봇2 시작 위치 설정 (70cm 거리)
         robot1_final_pos, _ = self.get_end_effector_position(self.robot1_id)
@@ -613,7 +612,7 @@ class DualRobotController:
             robot1_final_pos[2]  # 같은 높이 (140cm)
         ]
         
-        print(f"🎯 로봇2: {robot2_start_distance*100:.0f}cm 거리에서 정렬 시작...")
+        print(f"로봇2: {robot2_start_distance*100:.0f}cm 거리에서 정렬 시작...")
         self.control_gripper(self.robot2_id, open_gripper=True)  # 그리퍼 열기
         
         # 5. 완벽한 정렬 찾기 (간단화)
@@ -623,7 +622,7 @@ class DualRobotController:
         
         while not perfect_alignment and alignment_attempts < max_alignment_attempts:
             alignment_attempts += 1
-            print(f"   🔄 정렬 시도 {alignment_attempts}/{max_alignment_attempts}")
+            print(f"  정렬 시도 {alignment_attempts}/{max_alignment_attempts}")
             
             # 로봇2를 시작 위치로 이동
             self.move_robot_to_position(self.robot2_id, robot2_start_pos, slow=True)
@@ -658,19 +657,19 @@ class DualRobotController:
             perfect_alignment = self.check_close_range_alignment()
             
             if perfect_alignment:
-                print("   ✅ 정렬 완료!")
+                print("   정렬 완료!")
                 break
             else:
-                print("   ⚠️ 미세 조정...")
+                print("   미세 조정...")
                 for _ in range(20):
                     p.stepSimulation()
                     time.sleep(1/240)
         
         if not perfect_alignment:
-            print("   ⚠️ 근사 정렬로 진행...")
+            print(" 근사 정렬로 진행...")
         
         # 6. 로봇2가 직선 접근
-        print("➡️ 로봇2: 직선 접근...")
+        print("로봇2: 직선 접근...")
         
         # 접근 단계 (6단계로 더 단순화)
         approach_steps = 6
@@ -700,11 +699,11 @@ class DualRobotController:
             obj_distance = math.sqrt(sum((a-b)**2 for a, b in zip(robot2_pos, obj_pos)))
             
             if obj_distance < 0.05:  # 5cm 이내면 접근 완료
-                print(f"   ✅ 접근 완료! 거리: {obj_distance:.3f}m")
+                print(f"   접근 완료! 거리: {obj_distance:.3f}m")
                 break
         
         # 7. 로봇2 그리퍼 닫기
-        print("🤏 로봇2: 그리퍼 닫기...")
+        print("로봇2: 그리퍼 닫기...")
         self.control_gripper(self.robot2_id, open_gripper=False)
         
         # 짧은 대기
@@ -713,22 +712,22 @@ class DualRobotController:
             time.sleep(1/240)
         
         # 8. 로봇1 그리퍼 열기 (전달 완료)
-        print("📤 로봇1: 전달 완료 - 그리퍼 열기")
+        print("로봇1: 전달 완료 - 그리퍼 열기")
         self.control_gripper(self.robot1_id, open_gripper=True)
         
         # 9. 로봇2가 수확 상자로 이동
         delivery_pos = [0.1, -0.5, 0.8]
         delivery_orn = p.getQuaternionFromEuler([math.pi, 0, 0])
         
-        print("📦 로봇2: 수확 상자로 이동...")
+        print("로봇2: 수확 상자로 이동...")
         self.move_robot_to_position(self.robot2_id, delivery_pos, delivery_orn)
         
         # 10. 로봇2가 객체 놓기
-        print("📦 로봇2: 객체 놓기...")
+        print("로봇2: 객체 놓기...")
         self.control_gripper(self.robot2_id, open_gripper=True)
         
         # 11. 두 로봇 홈 복귀
-        print("🏠 두 로봇 홈 복귀...")
+        print("두 로봇 홈 복귀...")
         robot1_data = self.robots['robot1']
         robot2_data = self.robots['robot2']
         
@@ -742,7 +741,7 @@ class DualRobotController:
             p.stepSimulation()
             time.sleep(1/240)
         
-        print("✅ 몸쪽 당기기 도킹 완료!")
+        print("몸쪽 당기기 도킹 완료!")
         return True
 
     def check_close_range_alignment(self):
@@ -765,46 +764,46 @@ class DualRobotController:
             return perfect
             
         except Exception as e:
-            print(f"   ❌ 근거리 정렬 확인 실패: {e}")
+            print(f"   근거리 정렬 확인 실패: {e}")
             return False
     
     def dual_robot_harvest_sequence(self, target_object_id):
         """듀얼 로봇 수확 시퀀스"""
-        print(f"\n🌸 듀얼 로봇 수확 시작 (객체 ID: {target_object_id})")
+        print(f"\n듀얼 로봇 수확 시작 (객체 ID: {target_object_id})")
         
         # 1. 객체 위치 확인
         obj_pos, _ = self.get_object_position(target_object_id)
-        print(f"🎯 타겟 위치: {[round(x, 3) for x in obj_pos]}")
+        print(f"타겟 위치: {[round(x, 3) for x in obj_pos]}")
         
         # 2. 로봇1이 접근
         approach_pos = [obj_pos[0], obj_pos[1], obj_pos[2] + 0.15]
-        print("🤖 로봇1: 접근 중...")
+        print("로봇1: 접근 중...")
         self.control_gripper(self.robot1_id, open_gripper=True)
         self.move_robot_to_position(self.robot1_id, approach_pos)
         
         # 3. 로봇1이 점진적 하강하여 잡기
-        print("🤖 로봇1: 잡기 시도...")
+        print(" 로봇1: 잡기 시도...")
         grasp_success = self.gradual_descent_and_grasp(self.robot1_id, approach_pos, target_object_id)
         
         if not grasp_success:
-            print("❌ 잡기 실패!")
+            print(" 잡기 실패!")
             return False
         
-        print("✅ 잡기 성공!")
+        print("잡기 성공!")
         
         # 4. 두 로봇 간 전달
         handover_success = self.perform_handover(target_object_id)
         
         if handover_success:
-            print("✅ 듀얼 로봇 수확 완료!")
+            print(" 듀얼 로봇 수확 완료!")
             return True
         else:
-            print("❌ 전달 실패!")
+            print(" 전달 실패!")
             return False
     
     def system_check(self):
         """시스템 상태 확인"""
-        print("🔍 시스템 상태 확인...")
+        print("시스템 상태 확인...")
         
         # 로봇 상태 확인
         for robot_key, robot_data in self.robots.items():
@@ -818,14 +817,14 @@ class DualRobotController:
             obj_pos, _ = self.get_object_position(self.target_objects[0])
             print(f"   샤프란 꽃: {[round(x, 3) for x in obj_pos]}")
         
-        print("✅ 시스템 상태 정상")
+        print("시스템 상태 정상")
     
     def test_single_robot_harvest(self):
         """단일 로봇 수확 테스트"""
-        print("🧪 단일 로봇 수확 테스트...")
+        print(" 단일 로봇 수확 테스트...")
         
         if not self.target_objects:
-            print("❌ 수확할 객체가 없습니다!")
+            print(" 수확할 객체가 없습니다!")
             return
         
         # 유일한 객체로 테스트
@@ -835,7 +834,7 @@ class DualRobotController:
         # 로봇1으로 기본 수확 테스트
         approach_pos = [obj_pos[0], obj_pos[1], obj_pos[2] + 0.15]
         
-        print("🤖 로봇1: 단일 수확 테스트 중...")
+        print("로봇1: 단일 수확 테스트 중...")
         self.control_gripper(self.robot1_id, open_gripper=True)
         self.move_robot_to_position(self.robot1_id, approach_pos)
         
@@ -852,19 +851,19 @@ class DualRobotController:
             self.move_robot_to_position(self.robot1_id, place_pos)
             self.control_gripper(self.robot1_id, open_gripper=True)
             
-            print("✅ 단일 로봇 테스트 성공!")
+            print("단일 로봇 테스트 성공!")
         else:
-            print("❌ 단일 로봇 테스트 실패!")
+            print(" 단일 로봇 테스트 실패!")
         
         # 홈으로 복귀
         self.move_both_to_home()
     
     def test_dual_robot_handover(self):
         """듀얼 로봇 전달 테스트"""
-        print("🧪 듀얼 로봇 전달 테스트...")
+        print("듀얼 로봇 전달 테스트...")
         
         if not self.target_objects:
-            print("❌ 테스트할 객체가 없습니다!")
+            print("테스트할 객체가 없습니다!")
             return
         
         # 유일한 객체로 테스트
@@ -872,30 +871,31 @@ class DualRobotController:
         success = self.dual_robot_harvest_sequence(target_obj)
         
         if success:
-            print("✅ 듀얼 로봇 전달 테스트 성공!")
+            print("듀얼 로봇 전달 테스트 성공!")
         else:
-            print("❌ 듀얼 로봇 전달 테스트 실패!")
+            print(" 듀얼 로봇 전달 테스트 실패!")
     
     def run_full_harvest_cycle(self):
         """전체 수확 사이클 실행"""
-        print("🌸 전체 수확 사이클 시작...")
+        print(" 전체 수확 사이클 시작...")
         
         if not self.target_objects:
-            print("❌ 수확할 꽃이 없습니다!")
+            print(" 수확할 꽃이 없습니다!")
             return
         
         # 유일한 꽃 수확
         target_obj = self.target_objects[0]
-        print(f"🌸 샤프란 꽃 수확 중...")
+        print(f"샤프란 꽃 수확 중...")
         
         try:
             success = self.dual_robot_harvest_sequence(target_obj)
             if success:
-                print("✅ 샤프란 꽃 수확 성공!")
+                print(" 샤프란 꽃 수확 성공!")
             else:
-                print("❌ 샤프란 꽃 수확 실패!")
+                print("샤프란 꽃 수확 실패!")
                 
         except Exception as e:
-            print(f"❌ 수확 중 오류: {e}")
+            print(f"수확 중 오류: {e}")
         
-        print(f"🌸 수확 사이클 완료!")
+
+        print(f"수확 사이클 완료!")
