@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 개선된 듀얼 로봇팔 컨트롤러 - 안정적 핸드오버 시스템
 - 상태기계 기반 핸드오버
@@ -322,7 +321,7 @@ class ImprovedDualRobotController:
                 baseVisualShapeIndex=cylinder_visual,
                 basePosition=flower_position)
             
-            # 🔧 물체 동역학 강화 (마찰/회전 저항)
+            # 물체 동역학 강화 (마찰/회전 저항)
             p.changeDynamics(cylinder_id, -1, lateralFriction=1.0, rollingFriction=0.001, spinningFriction=0.001)
             
             self.target_objects.append(cylinder_id)
@@ -927,7 +926,7 @@ class ImprovedDualRobotController:
             time.sleep(1/240)
         
         # 그리퍼 닫기 (꽉 잡기)
-        print("🤏 그리퍼 꽉 잡기...")
+        print("그리퍼 꽉 잡기...")
         self.close_gripper_tight(robot_id)
         
         # 최종 접촉 확인
@@ -1143,7 +1142,7 @@ class ImprovedDualRobotController:
             self._swing_in_prepath(r2_start, r1_pos, r2_quat, radius=0.18)
 
             # 프리그립 위치: '포트(r1_pos)' 기준으로 r2 전진축의 -pre_offset
-            a2  = self._ee_forward_axis_world(self.robot2_id)  # 👈 r2 실제 전진축(월드)
+            a2  = self._ee_forward_axis_world(self.robot2_id)  # r2 실제 전진축(월드)
             pre_r2 = (np.array(r1_pos) - a2*pre_offset).tolist()
             pre_r2 = self._clamp_z(self._clamp_side_handover(self.robot2_id, pre_r2))
 
@@ -1218,7 +1217,7 @@ class ImprovedDualRobotController:
             self._retreat_receiver_along_facing(self.robot2_id, r1_pos, dist=self.failed_retreat_distance)
 
         # 5) DOUBLE-HOLD: 로봇2가 잡기 (FAST-PASS에서 이미 잡았으면 생략)
-        print("🤝 DOUBLE-HOLD: 두 로봇이 동시에 객체 보유")
+        print("DOUBLE-HOLD: 두 로봇이 동시에 객체 보유")
         if not self.active_grips.get(self.robot2_id, False):
             self.close_gripper_tight(self.robot2_id)
 
@@ -1432,7 +1431,7 @@ class ImprovedDualRobotController:
     
     def test_precision_docking(self):
         """정밀 도킹 테스트"""
-        print("🧪 정밀 도킹 테스트...")
+        print("정밀 도킹 테스트...")
         
         if not self.target_objects:
             print("테스트할 객체가 없습니다!")
@@ -1580,7 +1579,7 @@ class ImprovedDualRobotController:
     # === 실험적 기능: 적응형 핸드오버 ===
     def adaptive_handover(self, object_id, max_retries=3):
         """적응형 핸드오버 - 실패 시 파라미터 조정하여 재시도"""
-        print("🔄 적응형 핸드오버 시작...")
+        print("적응형 핸드오버 시작...")
         
         # 시도별 파라미터 조정
         params_list = [
@@ -1680,8 +1679,9 @@ def main():
         traceback.print_exc()
     
     finally:
-        print("🔌 시뮬레이션 종료")
+        print("시뮬레이션 종료")
         p.disconnect()
 
 if __name__ == "__main__":
+
     main()
