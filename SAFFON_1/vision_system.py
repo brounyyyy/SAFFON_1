@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 비전 시스템 - 다중 카메라 및 객체 탐지
 """
@@ -383,5 +382,6 @@ class VisionSystem:
             print(f"   {name}: {camera['description']}")
             print(f"      위치: {camera['eye_pos']}")
             print(f"      타겟: {camera['target_pos']}")
+
 
 import time
